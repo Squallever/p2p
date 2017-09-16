@@ -54,4 +54,12 @@ public interface Cash_flowMapper {
 	 * @return
 	 */
 	Integer findAllCount(@Param(value = "financial_tran_type") String financial_tran_type);
+
+	/**
+	 * 查询用户所有资金记录
+	 * 
+	 * @param m_id
+	 * @return
+	 */
+	List<Cash_flow> findAllByMID(Integer m_id);
 }

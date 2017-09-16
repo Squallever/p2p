@@ -1,12 +1,17 @@
 package cn.p2p.controller;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -553,5 +558,31 @@ public class FrontMemberController {
 			return "true";
 		}
 		return "false";
+	}
+
+	/**
+	 * 导出Excel
+	 * 
+	 * @param request
+	 * @param response
+	 * @throws Exception
+	 */
+	@RequestMapping("/exportExcel")
+	public void exportExcel(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+		// 当前用户id
+		Integer m_id = ((Member) session.getAttribute(Constant.USER_SESSION)).getId();
+		List<Cash_flow> cash_flows = cash_flowService.findAllByMID(m_id);
+
+		XSSFWorkbook wb = cash_flowService.export(cash_flows);
+		response.setContentType("application/vnd.ms-excel");
+		response.setHeader("Content-disposition", "attachment;filename=Cash_flow.xlsx");
+		try {
+			OutputStream ouputStream = response.getOutputStream();
+			wb.write(ouputStream);
+			ouputStream.flush();
+			ouputStream.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

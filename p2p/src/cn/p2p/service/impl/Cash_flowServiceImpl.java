@@ -5,6 +5,12 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 
 import cn.p2p.dao.Cash_flowMapper;
@@ -95,5 +101,48 @@ public class Cash_flowServiceImpl implements Cash_flowService {
 	@Override
 	public Integer findAllCount(String financial_tran_type) {
 		return cash_flowMapper.findAllCount(financial_tran_type);
+	}
+
+	@Override
+	public XSSFWorkbook export(List<Cash_flow> list) {
+		String[] excelHeader = { "资金交易类型", "收入", "支出", "当前资金", "备注", "创建时间" };
+		// 这里需要说明一个问题：如果是 Offices 2007以前的Excel版本，new的对象是：**HSSFWorkbook**
+		// ，Offices 2007以后的Excel版本new的对象才是XSSFWorkbook
+		XSSFWorkbook wb = new XSSFWorkbook();
+
+		// 生成一个工作表
+		Sheet sheet = wb.createSheet("资金交易记录表");
+		// 生成第一行
+		Row row = sheet.createRow((int) 0);
+		// 生成单元格的样式style
+		XSSFCellStyle style = wb.createCellStyle();
+		style.setAlignment(CellStyle.ALIGN_CENTER);
+
+		for (int i = 0; i < excelHeader.length; i++) {
+			// 获取每一个单元格
+			Cell cell = row.createCell(i);
+			// 给单元格赋值
+			cell.setCellValue(excelHeader[i]);
+			// 设置单元格的样式
+			cell.setCellStyle(style);
+		}
+		for (int i = 0; i < list.size(); i++) {
+			// 得到当前行数的下一行（row.getRowNum()：得到当前行数）
+			row = sheet.createRow(row.getRowNum() + 1);
+			Cash_flow cash_flow = list.get(i);
+			// 赋值
+			row.createCell(0).setCellValue(cash_flow.getFinancial_tran_type());
+			row.createCell(1).setCellValue(cash_flow.getIncome());
+			row.createCell(2).setCellValue(cash_flow.getOutlay());
+			row.createCell(3).setCellValue(cash_flow.getUser_fund_account_amount());
+			row.createCell(4).setCellValue(cash_flow.getRemarks());
+			row.createCell(5).setCellValue(cash_flow.getCreatetime());
+		}
+		return wb;
+	}
+
+	@Override
+	public List<Cash_flow> findAllByMID(Integer m_id) {
+		return cash_flowMapper.findAllByMID(m_id);
 	}
 }

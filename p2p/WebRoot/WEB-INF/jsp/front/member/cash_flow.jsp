@@ -9,22 +9,15 @@
 		<div class="money-choose">
 			<span class="money-date1">操作类型</span> <select class="form-control"
 				name="financial_tran_type">
-					<option selected="selected">全部</option>
-					<option value="XSCZ">充值</option>
-					<option value="TX">提现</option>
-					<option value="TB">投标</option>
-					<option value="SK">收款</option>
-					<option value="FK">放款</option>
-					<option value="HK">还款</option>
-			</select>
-			<button
-				class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only btn-sx">
-				<span class="ui-button-text ui-c">筛选</span>
-			</button>
-			<button
-				class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only btn-dc">
-				<span class="ui-button-text ui-c">导出</span>
-			</button>
+				<option selected="selected">全部</option>
+				<option value="XSCZ">充值</option>
+				<option value="TX">提现</option>
+				<option value="TB">投标</option>
+				<option value="SK">收款</option>
+				<option value="FK">放款</option>
+				<option value="HK">还款</option>
+			</select> <input type="submit" class="btn btn-info btn-sm" value="筛选">
+			<a class="btn btn-info btn-sm dcqb" href="${pageContext.request.contextPath }/front/member/exportExcel">导出全部</a>
 		</div>
 		<div class="x_panel">
 			<div class="x_title">

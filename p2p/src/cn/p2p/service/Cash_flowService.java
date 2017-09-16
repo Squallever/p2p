@@ -3,6 +3,7 @@ package cn.p2p.service;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import cn.p2p.pojo.Cash_flow;
 
@@ -66,4 +67,21 @@ public interface Cash_flowService {
 	 * @return
 	 */
 	Integer findAllCount(String financial_tran_type);
+
+	/**
+	 * 查询用户所有资金记录
+	 * 
+	 * @param m_id
+	 * @return
+	 */
+	List<Cash_flow> findAllByMID(Integer m_id);
+
+	/**
+	 * 导出资金记录到Excel
+	 * 
+	 * @param list
+	 * @return
+	 */
+	XSSFWorkbook export(List<Cash_flow> list);
+
 }

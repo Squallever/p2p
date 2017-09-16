@@ -84,4 +84,13 @@
 			</if>
 		</where>
 	</select>
+	
+	<select id="findAllByMID" resultType="Cash_flow">
+		SELECT
+		*
+		FROM
+		cash_flow
+		where
+		m_id=#{m_id}
+	</select>
 </mapper>
